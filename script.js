@@ -4,26 +4,20 @@ let contraMaquina = false
 let dificuldade = "facil"
 
 function modoJogador(){
-
 contraMaquina = false
 reiniciar()
 document.getElementById("status").innerHTML = "Modo: 2 Jogadores"
-
 }
 
 function modoMaquina(){
-
 contraMaquina = true
 reiniciar()
 document.getElementById("status").innerHTML = "Modo: Contra Máquina"
-
 }
 
 function setDificuldade(nivel){
-
 dificuldade = nivel
 document.getElementById("status").innerHTML = "Dificuldade: " + nivel
-
 }
 
 function jogar(casa,index){
@@ -49,7 +43,7 @@ return
 jogador = jogador == "X" ? "O" : "X"
 
 if(contraMaquina && jogador == "O"){
-setTimeout(jogadaMaquina,500)
+setTimeout(jogadaMaquina,400)
 }
 
 }
@@ -92,11 +86,9 @@ let casas = document.getElementsByClassName("casa")
 let livres = []
 
 for(let i=0;i<casas.length;i++){
-
 if(casas[i].innerHTML == ""){
 livres.push(i)
 }
-
 }
 
 let escolha = livres[Math.floor(Math.random()*livres.length)]
@@ -133,7 +125,7 @@ function jogadaDificil(){
 
 let casas = document.getElementsByClassName("casa")
 
-let vitorias = [
+let linhas = [
 
 [0,1,2],
 [3,4,5],
@@ -148,19 +140,24 @@ let vitorias = [
 
 /* tentar ganhar */
 
-for(let i=0;i<vitorias.length;i++){
+for(let i=0;i<linhas.length;i++){
 
-let [a,b,c] = vitorias[i]
+let a = linhas[i][0]
+let b = linhas[i][1]
+let c = linhas[i][2]
 
-let valores = [
-casas[a].innerHTML,
-casas[b].innerHTML,
-casas[c].innerHTML
-]
+if(casas[a].innerHTML=="O" && casas[b].innerHTML=="O" && casas[c].innerHTML==""){
+casas[c].innerHTML="O"
+return
+}
 
-if(valores.filter(v=>v=="O").length==2 && valores.includes("")){
-let pos = [a,b,c][valores.indexOf("")]
-casas[pos].innerHTML="O"
+if(casas[a].innerHTML=="O" && casas[c].innerHTML=="O" && casas[b].innerHTML==""){
+casas[b].innerHTML="O"
+return
+}
+
+if(casas[b].innerHTML=="O" && casas[c].innerHTML=="O" && casas[a].innerHTML==""){
+casas[a].innerHTML="O"
 return
 }
 
@@ -168,19 +165,24 @@ return
 
 /* bloquear jogador */
 
-for(let i=0;i<vitorias.length;i++){
+for(let i=0;i<linhas.length;i++){
 
-let [a,b,c] = vitorias[i]
+let a = linhas[i][0]
+let b = linhas[i][1]
+let c = linhas[i][2]
 
-let valores = [
-casas[a].innerHTML,
-casas[b].innerHTML,
-casas[c].innerHTML
-]
+if(casas[a].innerHTML=="X" && casas[b].innerHTML=="X" && casas[c].innerHTML==""){
+casas[c].innerHTML="O"
+return
+}
 
-if(valores.filter(v=>v=="X").length==2 && valores.includes("")){
-let pos = [a,b,c][valores.indexOf("")]
-casas[pos].innerHTML="O"
+if(casas[a].innerHTML=="X" && casas[c].innerHTML=="X" && casas[b].innerHTML==""){
+casas[b].innerHTML="O"
+return
+}
+
+if(casas[b].innerHTML=="X" && casas[c].innerHTML=="X" && casas[a].innerHTML==""){
+casas[a].innerHTML="O"
 return
 }
 
@@ -195,7 +197,7 @@ return
 
 /* pegar cantos */
 
-let cantos=[0,2,6,8]
+let cantos = [0,2,6,8]
 
 for(let i=0;i<cantos.length;i++){
 
@@ -209,74 +211,6 @@ return
 /* jogada aleatória */
 
 jogadaAleatoria()
-
-}
-
-}
-
-}
-
-casas[melhorJogada].innerHTML = "O"
-
-}
-
-function minimax(estaMaximizando){
-
-let casas = document.getElementsByClassName("casa")
-
-if(verificarVitoria()){
-return estaMaximizando ? -1 : 1
-}
-
-if(verificarEmpate()){
-return 0
-}
-
-if(estaMaximizando){
-
-let melhorPontuacao = -Infinity
-
-for(let i=0;i<casas.length;i++){
-
-if(casas[i].innerHTML == ""){
-
-casas[i].innerHTML = "O"
-
-let pontuacao = minimax(false)
-
-casas[i].innerHTML = ""
-
-melhorPontuacao = Math.max(pontuacao, melhorPontuacao)
-
-}
-
-}
-
-return melhorPontuacao
-
-}else{
-
-let melhorPontuacao = Infinity
-
-for(let i=0;i<casas.length;i++){
-
-if(casas[i].innerHTML == ""){
-
-casas[i].innerHTML = "X"
-
-let pontuacao = minimax(true)
-
-casas[i].innerHTML = ""
-
-melhorPontuacao = Math.min(pontuacao, melhorPontuacao)
-
-}
-
-}
-
-return melhorPontuacao
-
-}
 
 }
 
