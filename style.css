@@ -1,0 +1,44 @@
+body{
+font-family: Arial;
+text-align: center;
+background-color: #f0f0f0;
+}
+
+#tabuleiro{
+width: 300px;
+margin: 20px auto;
+display: grid;
+grid-template-columns: repeat(3,100px);
+}
+
+.casa{
+width: 100px;
+height: 100px;
+border: 2px solid black;
+font-size: 50px;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+background: white;
+}
+
+.casa:hover{
+background: #eee;
+}
+
+button{
+padding:10px 20px;
+margin:10px;
+font-size:16px;
+}
+
+footer{
+margin-top:40px;
+padding:60px;
+background:#222;
+color:white;
+position:fixed;
+bottom:0;
+width:100%;
+}
