@@ -131,25 +131,84 @@ jogadaAleatoria()
 
 function jogadaDificil(){
 
-let melhorPontuacao = -Infinity
-let melhorJogada
-
 let casas = document.getElementsByClassName("casa")
 
-for(let i=0;i<casas.length;i++){
+let vitorias = [
 
-if(casas[i].innerHTML == ""){
+[0,1,2],
+[3,4,5],
+[6,7,8],
+[0,3,6],
+[1,4,7],
+[2,5,8],
+[0,4,8],
+[2,4,6]
 
-casas[i].innerHTML = "O"
+]
 
-let pontuacao = minimax(false)
+/* tentar ganhar */
 
-casas[i].innerHTML = ""
+for(let i=0;i<vitorias.length;i++){
 
-if(pontuacao > melhorPontuacao){
+let [a,b,c] = vitorias[i]
 
-melhorPontuacao = pontuacao
-melhorJogada = i
+let valores = [
+casas[a].innerHTML,
+casas[b].innerHTML,
+casas[c].innerHTML
+]
+
+if(valores.filter(v=>v=="O").length==2 && valores.includes("")){
+let pos = [a,b,c][valores.indexOf("")]
+casas[pos].innerHTML="O"
+return
+}
+
+}
+
+/* bloquear jogador */
+
+for(let i=0;i<vitorias.length;i++){
+
+let [a,b,c] = vitorias[i]
+
+let valores = [
+casas[a].innerHTML,
+casas[b].innerHTML,
+casas[c].innerHTML
+]
+
+if(valores.filter(v=>v=="X").length==2 && valores.includes("")){
+let pos = [a,b,c][valores.indexOf("")]
+casas[pos].innerHTML="O"
+return
+}
+
+}
+
+/* pegar centro */
+
+if(casas[4].innerHTML==""){
+casas[4].innerHTML="O"
+return
+}
+
+/* pegar cantos */
+
+let cantos=[0,2,6,8]
+
+for(let i=0;i<cantos.length;i++){
+
+if(casas[cantos[i]].innerHTML==""){
+casas[cantos[i]].innerHTML="O"
+return
+}
+
+}
+
+/* jogada aleatória */
+
+jogadaAleatoria()
 
 }
 
