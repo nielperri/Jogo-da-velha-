@@ -1,54 +1,54 @@
-let jogador="X"
-let jogoAtivo=false
-let contraMaquina=false
-let dificuldade="facil"
+let jogador = "X"
+let jogoAtivo = false
+let contraMaquina = false
+let dificuldade = "facil"
 
 function modoJogador(){
 
-contraMaquina=false
+contraMaquina = false
 reiniciar()
-document.getElementById("status").innerHTML="Modo: 2 Jogadores"
+document.getElementById("status").innerHTML = "Modo: 2 Jogadores"
 
 }
 
 function modoMaquina(){
 
-contraMaquina=true
+contraMaquina = true
 reiniciar()
-document.getElementById("status").innerHTML="Modo: Contra Máquina"
+document.getElementById("status").innerHTML = "Modo: Contra Máquina"
 
 }
 
 function setDificuldade(nivel){
 
-dificuldade=nivel
-document.getElementById("status").innerHTML="Dificuldade: "+nivel
+dificuldade = nivel
+document.getElementById("status").innerHTML = "Dificuldade: " + nivel
 
 }
 
 function jogar(casa,index){
 
-if(casa.innerHTML!="" || !jogoAtivo){
+if(casa.innerHTML != "" || !jogoAtivo){
 return
 }
 
-casa.innerHTML=jogador
+casa.innerHTML = jogador
 
 if(verificarVitoria()){
-mostrarResultado("Jogador "+jogador+" venceu!")
-jogoAtivo=false
+mostrarResultado("Jogador " + jogador + " venceu!")
+jogoAtivo = false
 return
 }
 
 if(verificarEmpate()){
 mostrarResultado("EMPATE!")
-jogoAtivo=false
+jogoAtivo = false
 return
 }
 
-jogador = jogador=="X" ? "O":"X"
+jogador = jogador == "X" ? "O" : "X"
 
-if(contraMaquina && jogador=="O"){
+if(contraMaquina && jogador == "O"){
 setTimeout(jogadaMaquina,500)
 }
 
@@ -58,42 +58,42 @@ function jogadaMaquina(){
 
 if(!jogoAtivo) return
 
-if(dificuldade=="facil"){
+if(dificuldade == "facil"){
 jogadaAleatoria()
 }
 
-if(dificuldade=="medio"){
+if(dificuldade == "medio"){
 jogadaMedia()
 }
 
-if(dificuldade=="dificil"){
+if(dificuldade == "dificil"){
 jogadaDificil()
 }
 
 if(verificarVitoria()){
 mostrarResultado("Máquina venceu!")
-jogoAtivo=false
+jogoAtivo = false
 return
 }
 
 if(verificarEmpate()){
 mostrarResultado("EMPATE!")
-jogoAtivo=false
+jogoAtivo = false
 return
 }
 
-jogador="X"
+jogador = "X"
 
 }
 
 function jogadaAleatoria(){
 
-let casas=document.getElementsByClassName("casa")
-let livres=[]
+let casas = document.getElementsByClassName("casa")
+let livres = []
 
 for(let i=0;i<casas.length;i++){
 
-if(casas[i].innerHTML==""){
+if(casas[i].innerHTML == ""){
 livres.push(i)
 }
 
@@ -101,25 +101,25 @@ livres.push(i)
 
 let escolha = livres[Math.floor(Math.random()*livres.length)]
 
-casas[escolha].innerHTML="O"
+casas[escolha].innerHTML = "O"
 
 }
 
 function jogadaMedia(){
 
-let casas=document.getElementsByClassName("casa")
+let casas = document.getElementsByClassName("casa")
 
 for(let i=0;i<casas.length;i++){
 
-if(casas[i].innerHTML==""){
+if(casas[i].innerHTML == ""){
 
-casas[i].innerHTML="O"
+casas[i].innerHTML = "O"
 
 if(verificarVitoria()){
 return
 }
 
-casas[i].innerHTML=""
+casas[i].innerHTML = ""
 
 }
 
@@ -131,22 +131,101 @@ jogadaAleatoria()
 
 function jogadaDificil(){
 
-let casas=document.getElementsByClassName("casa")
+let melhorPontuacao = -Infinity
+let melhorJogada
 
-if(casas[4].innerHTML==""){
-casas[4].innerHTML="O"
-return
+let casas = document.getElementsByClassName("casa")
+
+for(let i=0;i<casas.length;i++){
+
+if(casas[i].innerHTML == ""){
+
+casas[i].innerHTML = "O"
+
+let pontuacao = minimax(false)
+
+casas[i].innerHTML = ""
+
+if(pontuacao > melhorPontuacao){
+
+melhorPontuacao = pontuacao
+melhorJogada = i
+
 }
 
-jogadaMedia()
+}
+
+}
+
+casas[melhorJogada].innerHTML = "O"
+
+}
+
+function minimax(estaMaximizando){
+
+let casas = document.getElementsByClassName("casa")
+
+if(verificarVitoria()){
+return estaMaximizando ? -1 : 1
+}
+
+if(verificarEmpate()){
+return 0
+}
+
+if(estaMaximizando){
+
+let melhorPontuacao = -Infinity
+
+for(let i=0;i<casas.length;i++){
+
+if(casas[i].innerHTML == ""){
+
+casas[i].innerHTML = "O"
+
+let pontuacao = minimax(false)
+
+casas[i].innerHTML = ""
+
+melhorPontuacao = Math.max(pontuacao, melhorPontuacao)
+
+}
+
+}
+
+return melhorPontuacao
+
+}else{
+
+let melhorPontuacao = Infinity
+
+for(let i=0;i<casas.length;i++){
+
+if(casas[i].innerHTML == ""){
+
+casas[i].innerHTML = "X"
+
+let pontuacao = minimax(true)
+
+casas[i].innerHTML = ""
+
+melhorPontuacao = Math.min(pontuacao, melhorPontuacao)
+
+}
+
+}
+
+return melhorPontuacao
+
+}
 
 }
 
 function verificarVitoria(){
 
-let casas=document.getElementsByClassName("casa")
+let casas = document.getElementsByClassName("casa")
 
-let v=[
+let v = [
 
 [0,1,2],
 [3,4,5],
@@ -161,15 +240,15 @@ let v=[
 
 for(let i=0;i<v.length;i++){
 
-let a=v[i][0]
-let b=v[i][1]
-let c=v[i][2]
+let a = v[i][0]
+let b = v[i][1]
+let c = v[i][2]
 
 if(
 
-casas[a].innerHTML!="" &&
-casas[a].innerHTML==casas[b].innerHTML &&
-casas[a].innerHTML==casas[c].innerHTML
+casas[a].innerHTML != "" &&
+casas[a].innerHTML == casas[b].innerHTML &&
+casas[a].innerHTML == casas[c].innerHTML
 
 ){
 return true
@@ -183,11 +262,11 @@ return false
 
 function verificarEmpate(){
 
-let casas=document.getElementsByClassName("casa")
+let casas = document.getElementsByClassName("casa")
 
 for(let i=0;i<casas.length;i++){
 
-if(casas[i].innerHTML==""){
+if(casas[i].innerHTML == ""){
 return false
 }
 
@@ -199,26 +278,28 @@ return true
 
 function mostrarResultado(texto){
 
-let tela=document.getElementById("resultado")
-let textoTela=document.getElementById("textoResultado")
+let tela = document.getElementById("resultado")
+let textoTela = document.getElementById("textoResultado")
 
-textoTela.innerHTML=texto
+textoTela.innerHTML = texto
 
-tela.style.display="flex"
+tela.style.display = "flex"
 
 }
 
 function reiniciar(){
 
-let casas=document.getElementsByClassName("casa")
+let casas = document.getElementsByClassName("casa")
 
 for(let i=0;i<casas.length;i++){
-casas[i].innerHTML=""
+casas[i].innerHTML = ""
 }
 
-jogador="X"
-jogoAtivo=true
+jogador = "X"
+jogoAtivo = true
 
-document.getElementById("resultado").style.display="none"
+document.getElementById("resultado").style.display = "none"
 
 }
+
+
