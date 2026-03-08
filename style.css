@@ -8,7 +8,7 @@ font-size: 80px;
 
 #tabuleiro{
 
-width: 300px;
+width: 200px;
 margin: 20px auto;
 display: grid;
 grid-template-columns: repeat(3,100px);
