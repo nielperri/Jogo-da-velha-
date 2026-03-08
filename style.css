@@ -8,7 +8,7 @@ font-size: 80px;
 
 #tabuleiro{
 
-width: 300px;
+width: 600px;
 margin: 20px auto;
 display: grid;
 grid-template-columns: repeat(3,100px);
@@ -39,7 +39,7 @@ button{
 
 padding:10px 20px;
 margin:10px;
-font-size:16px;
+font-size:60px;
 
 }
 
@@ -81,7 +81,7 @@ z-index:1000;
 
 #resultado button{
 
-font-size:25px;
+font-size:60px;
 padding:15px 30px;
 margin-top:30px;
 
